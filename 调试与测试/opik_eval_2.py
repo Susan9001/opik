@@ -6,10 +6,7 @@ from opik import Opik, track
 from opik.integrations.openai import track_openai
 from opik.evaluation import evaluate
 from opik.evaluation.metrics import Equals, Usefulness
-from opik.evaluation.models.base_model import OpikBaseModel
-import requests
-
-from sdks.python.src.opik.evaluation import models
+from opik.evaluation import models
 
 client = track_openai(OpenAI(
     # 若没有配置环境变量，请用百炼API Key将下行替换为：api_key="sk-xxx"
@@ -49,7 +46,6 @@ def evaluation_task(item: Dict[str, Any]) -> Dict[str, Any]:
       # 给 Equals 用
       "output": output,
       "reference": item["expected_output"],
-      # 给 Usefulness 用
       "input": task_prompt,
   }
 
@@ -57,8 +53,8 @@ def evaluation_task(item: Dict[str, Any]) -> Dict[str, Any]:
 # judge_model = models.LiteLLMChatModel(model="gpt-3.5-turbo", temperature=0)
 judge_model = models.LiteLLMChatModel(
     model_name="dashscope/qwen-flash",
-    api_base="https://dashscope.aliyuncs.com/compatible-mode/v1",
-    api_key=os.getenv("DASHSCOPE_API_KEY"),
+     api_base="https://dashscope.aliyuncs.com/compatible-mode/v1",
+    # api_key=os.getenv("DASHSCOPE_API_KEY"),
 )
 
 result = evaluate(
