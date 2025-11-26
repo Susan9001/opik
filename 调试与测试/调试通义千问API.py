@@ -6,7 +6,7 @@ client_bj = OpenAI(
     # 若没有配置环境变量，请用百炼API Key将下行替换为：api_key="sk-xxx"
     # api_key=os.getenv("DASHSCOPE_API_KEY"),
     api_key="sk-1b194212a77b40ec8f392a83beb087a5",
-    base_url="https://dashscope.aliyuncs.com/compatible-mode/v1", # Beijing
+    base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",  # Beijing
 )
 
 tracked_client = track_openai(client_bj)

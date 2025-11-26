@@ -16,15 +16,15 @@ client = track_openai(OpenAI(
 
 @track
 def llm_app(prompt: str):
-  res = client.chat.completions.create(
-      # 模型列表：https://help.aliyun.com/zh/model-studio/getting-started/models
-      model="qwen-flash",
-      messages=[
-        {"role": "system", "content": "You are a helpful assistant."},
-        {"role": "user", "content": prompt},
-      ]
-  )
-  return res.choices[0].message.content
+    res = client.chat.completions.create(
+        # 模型列表：https://help.aliyun.com/zh/model-studio/getting-started/models
+        model="qwen-flash",
+        messages=[
+          {"role": "system", "content": "You are a helpful assistant."},
+          {"role": "user", "content": prompt},
+        ]
+    )
+    return res.choices[0].message.content
 
 
 # Create a dataset that contains the samples you want to evaluate
@@ -53,23 +53,24 @@ translation_metric = GEval(
 
 
 def evaluation_task(item: Dict[str, Any]) -> Dict[str, Any]:
-  source = item["input"]
-  expected = item["expected_output"]
+    source = item["input"]
+    expected = item["expected_output"]
 
-  # 模型真正做翻译的调用
-  model_output = llm_app(f"Translate the following text to Chinese: {source}")
+    # 模型真正做翻译的调用
+    model_output = llm_app(
+        f"Translate the following text to Chinese: {source}")
 
-  # 拼成给 GEval 看的 payload
-  payload = (
-      f"SOURCE: {source}\n"
-      f"REFERENCE: {expected}\n"
-      f"MODEL_OUTPUT: {model_output}\n"
-  )
+    # 拼成给 GEval 看的 payload
+    payload = (
+        f"SOURCE: {source}\n"
+        f"REFERENCE: {expected}\n"
+        f"MODEL_OUTPUT: {model_output}\n"
+    )
 
-  # 注意: 对 GEval 来说,它只看 output 这个字段
-  return {
-      "output": payload,
-  }
+    # 注意: 对 GEval 来说,它只看 output 这个字段
+    return {
+        "output": payload,
+    }
 
 
 result = evaluate(
@@ -80,4 +81,4 @@ result = evaluate(
 
 scores = result.aggregate_evaluation_scores()
 for metric_name, statistics in scores.aggregated_scores.items():
-  print(metric_name, statistics)
+    print(metric_name, statistics)

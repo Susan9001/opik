@@ -16,7 +16,8 @@ dataset.insert([
 
 result = evaluate_prompt(
     dataset=dataset,
-    messages=[{"role": "user", "content": "Translate the following text to Chineses: {{input}}"}],
+    messages=[{"role": "user",
+               "content": "Translate the following text to Chineses: {{input}}"}],
     model="gpt-5-nano",  # or your preferred model
     scoring_metrics=[Usefulness()]
 )
@@ -25,4 +26,3 @@ result = evaluate_prompt(
 scores = result.aggregate_evaluation_scores()
 for metric_name, statistics in scores.aggregated_scores.items():
     print(f"{metric_name}: {statistics}")
-
