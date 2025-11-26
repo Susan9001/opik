@@ -17,15 +17,15 @@ client = track_openai(OpenAI(
 
 @track
 def llm_app(prompt: str):
-  res = client.chat.completions.create(
-      # 模型列表：https://help.aliyun.com/zh/model-studio/getting-started/models
-      model="qwen-flash",
-      messages=[
-        {"role": "system", "content": "You are a helpful assistant."},
-        {"role": "user", "content": prompt},
-      ]
-  )
-  return res.choices[0].message.content
+    res = client.chat.completions.create(
+        # 模型列表：https://help.aliyun.com/zh/model-studio/getting-started/models
+        model="qwen-flash",
+        messages=[
+          {"role": "system", "content": "You are a helpful assistant."},
+          {"role": "user", "content": prompt},
+        ]
+    )
+    return res.choices[0].message.content
 
 
 # Create a dataset that contains the samples you want to evaluate
@@ -40,20 +40,20 @@ dataset.insert([
 
 
 def evaluation_task(item: Dict[str, Any]) -> Dict[str, Any]:
-  task_prompt = f"Translate the following text to Chineses: \"{item['input']}\""
-  output = llm_app(task_prompt)
-  return {
-      # 给 Equals 用
-      "output": output,
-      "reference": item["expected_output"],
-      "input": task_prompt,
-  }
+    task_prompt = f"Translate the following text to Chineses: \"{item['input']}\""
+    output = llm_app(task_prompt)
+    return {
+        # 给 Equals 用
+        "output": output,
+        "reference": item["expected_output"],
+        "input": task_prompt,
+    }
 
 
 # judge_model = models.LiteLLMChatModel(model="gpt-3.5-turbo", temperature=0)
 judge_model = models.LiteLLMChatModel(
     model_name="dashscope/qwen-flash",
-     api_base="https://dashscope.aliyuncs.com/compatible-mode/v1",
+    api_base="https://dashscope.aliyuncs.com/compatible-mode/v1",
     # api_key=os.getenv("DASHSCOPE_API_KEY"),
 )
 
@@ -65,4 +65,4 @@ result = evaluate(
 
 scores = result.aggregate_evaluation_scores()
 for metric_name, statistics in scores.aggregated_scores.items():
-  print(metric_name, statistics)
+    print(metric_name, statistics)
