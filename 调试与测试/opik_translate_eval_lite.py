@@ -56,7 +56,12 @@ class OpikTranslationEvaluator:
         )
 
         # 3. Judge 用 LiteLLMChatModel 指向 DashScope provider
-        self.judge_model = QwenLiteJudgeModel(
+        # self.judge_model = QwenLiteJudgeModel(
+        #     model_name=judge_model_name,
+        #     api_base="https://dashscope.aliyuncs.com/compatible-mode/v1",
+        #     api_key=os.getenv("DASHSCOPE_API_KEY"),
+        # )
+        self.judge_model = models.LiteLLMChatModel(
             model_name=judge_model_name,
             api_base="https://dashscope.aliyuncs.com/compatible-mode/v1",
             api_key=os.getenv("DASHSCOPE_API_KEY"),
